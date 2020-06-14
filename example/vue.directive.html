@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+    <title>vue.directive 自定义指令</title>
+</head>
+<body>
+    <h1>vue.directive 自定义指令</h1>
+    <hr>
+    <div id="app">
+       <div v-jspang="color" id="aaa">
+           {{num}}
+       </div>
+       <p>
+           <button @click='jia'>加分</button>
+       </p>
+       <p>
+           <button onclick='unbind()'>解绑</button>
+       </p>
+    </div>
+
+    <script type="text/javascript">
+
+        function unbind(){
+            app.$destroy(); // 销毁
+        }
+
+        // 1. 自定义指令的简单使用
+        Vue.directive('jspang',{ // 上面调用时是：v-jspang
+            /**
+            * el 表示<div>10<div>即就是上面使用此指令的DOM
+            * binding 是一个对象，可以获取DOM中的一些属性等
+            */
+            // 2. 自定义指令的5个生命周期
+            bind:function(el,binding,vnode){//被绑定
+                /**
+                        var s=JSON.stringify;
+                        el.innerHTML = 
+                            'name:'        + s(binding.name) +'<br>' + 
+                            'value:'       + s(binding.value) +'<br>' + 
+                            'expression:'  + s(binding.expression) +'<br>' ;
+                **/
+                el.style='color:'+binding.value;
+                  
+
+                console.log('1 - bind');
+            },
+            inserted:function(){//绑定到节点
+                console.log('2 - inserted');
+            },
+            update:function(){//组件更新
+                console.log('3 - update');
+            },
+            componentUpdated:function(){//组件更新完成
+                console.log('4 - componentUpdated');
+            },
+            unbind:function(){//解绑
+                console.log('5 - unbind');
+            }
+
+        })
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                color:'green',
+                num:10
+            },
+            methods:{
+                jia:function(){
+                    this.num++;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

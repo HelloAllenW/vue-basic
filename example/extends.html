@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+    <title>Extends Optin Demo</title>
+</head>
+<body>
+    <h1>Extends Optin Demo</h1>
+    <p> 1. 扩展和原生方法冲突时，扩展方法会被忽略。 
+        2. 通过propsData可以向扩展传值（propsData.html中详细说明）
+        3. 扩展的另一种写法（vue.extend.html） 
+    </p>
+    <hr>
+    <div id="app">
+        {{message}}
+        ${message}
+        <p><button @click="add">add</button></p>
+    </div>
+
+    <script type="text/javascript">
+        // 如果扩展和原生方法一样，则只执行原生方法，不执行扩展方法
+        // 如果只有扩展没有原生，则执行扩展
+        var bbb={
+            created:function(){
+                console.log("我是被扩展出来的");
+            },
+            methods:{
+                add:function(){
+                    console.log('我是被扩展出来的方法！');
+                }
+            }
+        };
+        var app=new Vue({
+            el:'#app',
+            data:{
+                message:'hello Vue!'
+            },
+            methods:{
+                add:function(){
+                    console.log('我是原生方法');
+                }
+            },
+            extends:bbb, // 扩展只能放一个，不能放数组
+            delimiters:['${','}'] // 定义新的插值形式： ${message}
+        })
+    </script>
+</body>
+</html>

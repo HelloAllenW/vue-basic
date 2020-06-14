@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+    <title>Examples Method Demo</title>
+</head>
+<body>
+    <h1>Examples Method Demo</h1>
+    <hr>
+    <div id="app"></div>
+    <p><button onclick="destroy()">卸载</button></p>
+    <p><button onclick="reload()">刷新</button></p>
+    <p><button onclick="tick()">修改</button></p>
+    
+    <script type="text/javascript">
+      var jspang = Vue.extend({
+          template:`<p>{{message}}</p>`,
+          data:function(){
+              return {
+                  message:'Hello ,I am JSPang'
+              }
+          },
+          // 2. 看下挂载、销毁、更新生命周期
+          destroyed:function(){
+              console.log('10-destroyed 销毁之后');
+          },
+          mounted:function(){
+              console.log("4-mounted 被创建");
+          },
+          updated:function(){
+              console.log("6-updated 被更新后");
+          }
+      })
+      // 1. 实例化并挂载
+      var vm = new jspang().$mount("#app")
+
+      function destroy(){
+          vm.$destroy(); // 销毁方法
+      }
+
+      function reload(){
+          vm.$forceUpdate(); // 更新方法
+      }
+
+function tick(){
+    vm.message="update message info ";
+    // 3. data更新了之后会自动调用（监测数据被修改）
+    /** nextTick
+    * vue是数据驱动视图更新没错。但vue实现的响应式并不是数据发生改变后视图立即更新，该更新是异步的。
+    * 也就是说它要等所有的数据更新完成之后才会去更新页面。
+    * 如果要在created()钩子函数中进行DOM操作，由于created()钩子函数中还未对DOM进行任何渲染，
+    * 所以无法直接操作，需要通过$nextTick()来完成
+    */
+    vm.$nextTick(function(){
+        console.log('message更新完后我被调用了');
+    })
+}
+    </script>
+</body>
+</html>

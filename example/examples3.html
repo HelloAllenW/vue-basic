@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+    <title>Example Event Demo</title>
+</head>
+<body>
+    <h1>Example Event Demo</h1>
+    <hr>
+    <div id="app">
+        <p>{{num}}</p>
+        <button @click="add">add</button>
+        
+    </div>
+    <!-- 调用外部方法必须加（） -->
+     <p><button onclick="reduce()">reduce</button></p>
+     <p><button onclick="reduceOnce()">reduceOnce</button></p>
+     <p><button onclick="off()">off</button></p>
+     
+
+    <script type="text/javascript">
+        var app=new Vue({
+            el:'#app',
+            data:{num:1},
+            methods:{
+                add:function(){
+                    this.num++;
+                }
+            }
+        })
+        // 1. 实例事件
+        // 就是在构造器的外部写一个调用构造器内部的方法，这样写可以在实现在构造器外部调用构造器内部的数据
+        app.$on('reduce',function(){
+            console.log('执行了reduce()');
+            this.num--;
+        });
+        // 外部调用内部事件
+        function reduce(){
+            app.$emit('reduce'); // 触发上面的$on
+        }
+
+        // 2. 只使用一次的实例方法
+        app.$once('reduceOnce',function(){
+            console.log('只执行一次的方法');
+            this.num--;
+
+        });
+        function reduceOnce(){
+            app.$emit('reduceOnce');
+        }
+
+        // 3. 关闭事件
+        function off(){
+            app.$off('reduce'); // 取消上面的$on方法
+        }
+
+     
+    </script>
+</body>
+</html>

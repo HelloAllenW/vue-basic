@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+    <title>Methods Option Demo</title>
+</head>
+<body>
+    <h1>Methods Option Demo</h1>
+    <hr>
+    <div id="app">
+       {{a}}
+       <!-- 1. 构造器内部正常调用构造器方法 -->
+       <p><button @click="add(2)">add</button></p>
+       <!-- 2. 构造器内部组件调用构造器原生方法 -->
+       <p><btn @click.native="add(2)"></btn></p>
+    </div>
+    <!-- 3. vue构造器外部访问构造器内部方法 -->
+    <button onclick="app.add(3)">外部访问构造器里的方法</button>
+
+    <script type="text/javascript">
+       var btn={
+           template:'<button>外部组件</button>'
+       }
+
+
+        var app=new Vue({
+            el:'#app',
+            data:{
+                a:1
+            },
+            methods:{
+                add:function(num){
+                    
+                    return this.a+=num;
+                 }
+            },
+            components:{
+                "btn":btn
+            }
+        })
+    </script>
+</body>
+</html>
